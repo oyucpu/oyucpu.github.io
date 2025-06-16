@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Terminal - Antonio Oyuela</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gray: #626963;
+      --background: #272A36;
+      --header: #4a4a4a;
+      --text: #F5F3F1;
+      --title: #eeb7eb;
+      --command: #68ff99;
+      --error: #ff8383;
+
+  --light-background: #F5F3F1;
+  --light-header: #e0e0e0;
+  --light-text: #272A36;
+  --light-title: #8a3ffc;
+  --light-command: #3d8b61;
+  --light-error: #ff5e5e;
+  --light-text: #1a1a1a;
+}
+
+      
+      
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      background-color: var(--gray);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    main {
+      height: 550px;
+      width: 100%;
+      max-width: 750px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 0 20px;
+      height: 40px;
+      background-color: var(--header);
+      display: flex;
+      align-items: center;
+      align-items: center;
+        top: 50px; 
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .terminal {
+      background-color: var(--background);
+      color: var(--text);
+      padding: 15px;
+      height: calc(100% - 30px);
+      overflow-y: auto;
+      line-height: 1.4;
+    }
+
+    .terminal-content {
+      margin-bottom: 10px;
+    }
+
+    .prompt {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 10px;
+    }
+
+    .prompt-symbol {
+      color: var(--command);
+      font-weight: 600;
+    }
+
+    .prompt-user {
+      color: var(--title);
+      font-weight: 600;
+    }
+
+    input {
+      background-color: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Space Mono', monospace;
+      border: none;
+      flex: 1;
+      outline: none;
+    }
+
+    .command-output {
+      margin: 10px 0;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--title);
+      margin-bottom: 10px;
+    }
+
+    .title {
+      color: var(--title);
+      font-weight: 600;
+    }
+
+    .error {
+      color: var(--error);
+      font-weight: 600;
+    }
+
+    .command {
+      color: var(--command);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .command:hover {
+      text-decoration: underline;
+    }
+
+    .indent {
+      margin-left: 20px;
+      margin-top: 5px;
+    }
+
+    .link {
+      color: var(--command);
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .search-result {
+      background-color: rgba(104, 255, 153, 0.1);
+      border-left: 3px solid var(--command);
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 3px;
+    }
+
+    .search-highlight {
+      background-color: var(--command);
+      color: var(--background);
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+
+    .welcome {
+      margin-bottom: 15px;
+    }
+
+    .help-hint {
+      color: var(--gray);
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+    
+      body {
+        padding: 10px;
+      }
+      
+      main {
+        height: 80vh;
+        max-height: 600px;
+      }
+      
+      .terminal {
+        font-size: 13px;
+      }
+    }
+
+		body.light-mode {
+  		background-color: var(--light-background);
+  		color: var(--light-text);
+}
+
+	body.light-mode .terminal {
+  		background-color: var(--light-background);
+  		color: var(--light-text);
+}
+
+	body.light-mode .header {
+  		background-color: var(--light-header);
+}
+
+	body.light-mode .prompt-symbol,
+	body.light-mode .command,
+	body.light-mode .link {
+  		color: var(--light-command);
+}
+
+	body.light-mode .prompt-user,
+	body.light-mode .title {
+  		color: var(--light-title);
+}
+
+	body.light-mode .error {
+  		color: var(--light-error);
+}
+
+	body.light-mode .search-result {
+  		background-color: rgba(61, 139, 97, 0.1);
+  		border-left: 3px solid var(--light-command);
+}
+
+	body.light-mode .search-highlight {
+  		background-color: var(--light-command);
+  		color: var(--light-background);
+}
+
+    /* Scrollbar personalizada */
+    .terminal::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .terminal::-webkit-scrollbar-track {
+      background: var(--background);
+    }
+
+    .terminal::-webkit-scrollbar-thumb {
+      background: var(--header);
+      border-radius: 4px;
+    }
+    
+    /*Nuevas características*/
+
+    .terminal::-webkit-scrollbar-thumb:hover {
+      background: var(--gray);}
+      
+	.terminal {
+  		background-color: var(--background);
+  		color: inherit;
+}
+
+	input {
+  		color: inherit;
+}
+	.command-output {
+  		color: inherit;
+}
+
+  </style>
+</head>
+<body>
+  <main>
+    <div class="header">bash - Antonio Oyuela Portfolio</div>
+    <div class="terminal" id="terminal">
+      <div class="terminal-content">
+        <div class="command">Successful login - <span class="error" id="date"></span></div>
+        <div class="title welcome">Mi Portfolio v1.0</div>
+        <div>Hola! Bienvenidos a mi portfolio, para ver la lista de comandos ingresá <span class="command">help</span></div>
+        <div class="help-hint">Usa las flechas ↑↓ para navegar por el historial de comandos</div>
+      </div>
+      <div class="prompt" id="currentPrompt">
+        <span class="prompt-symbol">$</span>
+        <span class="prompt-user">invitado</span>
+        <input id="commandInput" autocomplete="off" spellcheck="false" autofocus />
+      </div>
+    </div>
+  </main>
+
+  <script>
+    class TerminalPortfolio {
+      constructor() {
+        this.commandInput = document.getElementById('commandInput');
+        this.terminal = document.getElementById('terminal');
+        this.currentPrompt = document.getElementById('currentPrompt');
+        this.commandHistory = [];
+        this.historyIndex = -1;
+        
+        this.init();
+        this.setupEventListeners();
+      }
+
+      init() {
+        document.getElementById('date').innerText = new Date().toDateString();
+        this.commandInput.focus();
+        
+        // Focus en el input cuando se hace click en la terminal
+        this.terminal.addEventListener('click', () => {
+          this.commandInput.focus(); 
+        });
+      }
+
+      setupEventListeners() {
+        this.commandInput.addEventListener('keydown', (e) => {
+          switch(e.key) {
+            case 'Enter':
+              this.executeCommand();
+              break;
+            case 'ArrowUp':
+              e.preventDefault();
+              this.navigateHistory('up');
+              break;
+            case 'ArrowDown':
+              e.preventDefault();
+              this.navigateHistory('down');
+              break;
+          }
+        });
+      }
+
+      navigateHistory(direction) {
+        if (this.commandHistory.length === 0) return;
+
+        if (direction === 'up') {
+          if (this.historyIndex < this.commandHistory.length - 1) {
+            this.historyIndex++;
+            this.commandInput.value = this.commandHistory[this.commandHistory.length - 1 - this.historyIndex];
+          }
+        } else if (direction === 'down') {
+          if (this.historyIndex > 0) {
+            this.historyIndex--;
+            this.commandInput.value = this.commandHistory[this.commandHistory.length - 1 - this.historyIndex];
+          } else if (this.historyIndex === 0) {
+            this.historyIndex = -1;
+            this.commandInput.value = '';
+          }
+        }
+      }
+
+      addToHistory(command) {
+        const trimmedCommand = command.trim();
+        if (trimmedCommand === '') return;
+        
+        // Evitar duplicados consecutivos
+        if (this.commandHistory.length === 0 || 
+            this.commandHistory[this.commandHistory.length - 1] !== trimmedCommand) {
+          this.commandHistory.push(trimmedCommand);
+          
+          // Limitar historial a 60 comandos
+          if (this.commandHistory.length > 60) {
+            this.commandHistory.shift();
+          }
+        }
+        this.historyIndex = -1;
+      }
+
+      executeCommand() {
+        const command = this.commandInput.value.trim();
+        
+        // Crear la línea de comando ejecutada
+        const commandLine = this.createCommandLine(command);
+        this.terminal.insertBefore(commandLine, this.currentPrompt);
+        
+        // Agregar al historial
+        this.addToHistory(command);
+        
+        // Ejecutar comando
+        if (command !== '') {
+          const output = this.processCommand(command);
+          if (output) {
+            this.terminal.insertBefore(output, this.currentPrompt);
+          }
+        }
+        
+        // Limpiar input y hacer scroll
+        this.commandInput.value = '';
+        this.scrollToBottom();
+      }
+
+      createCommandLine(command) {
+        const div = document.createElement('div');
+        div.innerHTML = `<span class="prompt-symbol">$</span> <span class="prompt-user">invitado</span> ${command}`;
+        return div;
+      }
+
+      processCommand(command) {
+        const args = command.toLowerCase().split(' ');
+        const cmd = args[0];
+        
+        switch(cmd) {
+        	case 'theme':
+  				return this.setTheme(args[1]);
+          case 'help':
+            return this.showHelp();
+          case 'about':
+            return this.showAbout();
+          case 'social':
+            return this.showSocial();
+          case 'skills':
+            return this.showSkills();
+          case 'education':
+            return this.showEducation();
+          case 'experience':
+            return this.showExperience();
+          case 'projects':
+            return this.showProjects();
+          case 'whoami':
+            return this.showWhoami();
+          case 'search':
+            const query = args.slice(1).join(' ');
+            return this.search(query);
+          case 'history':
+            return this.showHistory();
+          case 'clear':
+            return this.clearTerminal();
+          default:
+            return this.commandNotFound(command);
+        }
+      }
+      
+      setTheme(mode) {
+  const div = document.createElement('div');
+  div.className = 'command-output';
+
+  if (!mode || (mode !== 'dark' && mode !== 'light')) {
+    div.innerHTML = `
+      <div class="error">Modo inválido.</div>
+      <div>Uso: <span class="command">theme [dark|light]</span></div>
+    `;
+    return div;
+  }
+
+  if (mode === 'light') {
+    document.body.classList.add('light-mode');
+  } else {
+    document.body.classList.remove('light-mode');
+  }
+
+  div.innerHTML = `<div class="indent">Tema cambiado a <span class="command">${mode}</span>.</div>`;
+  return div;
+}
+
+      showHelp() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Comandos disponibles:</div>
+          <div class="indent">
+            <div><span class="command">about</span> - Información sobre mi</div>
+            <div><span class="command">social</span> - Mis redes sociales</div>
+            <div><span class="command">skills</span> - Herramientas y tecnologías</div>
+            <div><span class="command">education</span> - Formación académica</div>
+            <div><span class="command">experience</span> - Experiencia laboral</div>
+            <div><span class="command">projects</span> - Mis proyectos</div>
+            <div><span class="command">whoami</span> - Información del usuario</div>
+            <div><span class="command">search [término]</span> - Buscar contenido</div>
+            <div><span class="command">history</span> - Historial de comandos</div>
+            <div><span class="command">clear</span> - Limpiar terminal</div>
+            <div><span class="command">theme [dark|light]</span> - Cambiar modo de color</div>
+
+          </div>
+          <div class="help-hint">Usa las flechas ↑↓ para navegar por el historial</div>
+        `;
+        return div;
+      }
+
+      showAbout() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Sobre mi:</div>
+          <div class="indent">
+            Hola! Mi nombre es <span class="title">Antonio Oyuela</span><br><br>
+            Soy un desarrollador apasionado por la tecnología y el diseño. Me especializo en 
+            desarrollo frontend y backend, con experiencia en múltiples tecnologías web modernas. 
+            Me gusta crear experiencias digitales atractivas y funcionales, siempre buscando 
+            aprender nuevas tecnologías y mejorar mis habilidades.
+          </div>
+        `;
+        return div;
+      }
+
+      showSocial() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Redes sociales:</div>
+          <div class="indent">
+            <div><span class="title">GitHub:</span> <a href="https://github.com/Antonio-92-cpu" target="_blank" class="link">https://github.com/Antonio-92-cpu</a></div>
+            <div><span class="title">LinkedIn:</span> <a href="https://www.linkedin.com/in/antonio-oyuela-s%C3%A1nchez-0a3185141/" target="_blank" class="link">https://linkedin.com/in/antonio-oyuela</a></div>
+            <div><span class="title">Email:</span> <span class="command">antoniooyuela@gmail.com</span></div>
+          </div>
+        `;
+        return div;
+      }
+
+      showSkills() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Skills:</div>
+          <div class="indent">
+            <div>
+              <span class="command">Programación:</span>
+              <div class="indent">
+                <span class="title">HTML5</span> • <span class="title">CSS3</span> • 
+                <span class="title">JavaScript</span> • <span class="title">TypeScript</span><br>
+                <span class="title">React</span> • <span class="title">Angular</span> • 
+                <span class="title">Astro</span> • <span class="title">Node.js</span><br>
+                <span class="title">Git</span> • <span class="title">GitHub</span> •
+                <span class="title">PogrestSQL</span> • <span class="title">MariaDB</span><br>
+              </div>
+              <br>
+            <div>
+            <span class="command">Informática | Herramientas:</span>
+              <div class="indent">
+                <span class="title">Hirens Bot CD</span> • <span class="title">Clonezilla</span> • 
+                <span class="title">Maltego</span> • <span class="title">FOCA</span><br>
+                <span class="title">Windows - Linux - MacOS</span> • <span class="title">Android</span> • 
+                <span class="title">Gparted</span> • <span class="title">Terminal</span><br>
+                <span class="title">Seguridad informática</span> • <span class="title">Iptables</span><br>
+              </div>
+              <br>
+            </div>
+            <div>
+              <span class="command">Diseño y Contenido Digital:</span>
+              <div class="indent">
+                <span class="title">Adobe Illustrator</span> • <span class="title">Photoshop</span> • <span class="title">InDesign</span><br>
+                <span class="title">Premiere Pro</span> • <span class="title">Adobe Dreamwaver</span> • <span class="title">Paquete Corel Draw</span><br>
+                <span class="title">Figma</span> • <span class="title">UI/UX Design</span> • <span class="title">Adobe Animate</span><br>
+                <span class="title">Paquete Affinity</span> • <span class="title">Microsoft Office</span><br> 
+                <span class="title">LibreOffice / Openoffice</span> • <span class="title">Canva</span><br>
+              </div>
+            </div>
+            </br>
+            <div>
+              <span class="command">Idiomas:</span>
+              <div class="indent">
+                <span class="title">Español (Nativo)</span><br>
+                <span class="title">Inglés (Básico)</span><br>
+                <span class="title">Portugués (Básico)</span>
+              </div>
+            </div>
+        `;
+        return div;
+      }
+
+      showEducation() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Formación:</div>
+          <div class="indent">
+            <div>
+              <span class="title">Programación con Lenguajes Orientados a Objetos y Bases de Datos Relacionales</span><br>
+              <span class="command">Cursos 0,0</span>
+              <div class="indent">
+                Desarrollar aplicaciones organizando el código en clases y objetos, usando diferentes lenguajes. Diseño y la gestión de Bases de Datos de forma eficiente.
+                Mi labor esencial es integrar datos y lógica de negocio, en proyectos.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Operaciones de Grabación y Tratamiento de Datos y Documentos</span><br>
+              <span class="command">Grupo Aspasia</span>
+              <div class="indent">
+                Gestión documental, grabación precisa de datos y soporte administrativo en entornos profesionales digitales..
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Diseño Editorial y Oublicaciones Impresas y Multimedia | 1 año</span><br>
+              <span class="command">IES Virgen de la Paloma </span>
+              <div class="indent">
+                Técnico/a de publicaciones multimedia
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Desarrollo de Aplicaciones con Tecnologías Web</span><br>
+              <span class="command">Academia Colón </span>
+              <div class="indent">
+                Especialización en desarrollo fullstack con tecnologías web modernas, incluyendo frontend, backend y bases de datos.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">FP GS Desarrollo de Aplicaciones Web | 1 año</span><br>
+              <span class="command">IES Enrique Tierno Galván</span>
+              <div class="indent">
+                Aprendizaje a programar con lenguajes orientados a objetos y a usar bases de datos relacionales.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Confección y Publicación de Páginas Web</span><br>
+              <span class="command">Grupo Fexma</span>
+              <div class="indent">
+                Formación en diseño web, maquetación responsive y publicación de sitios web.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Desarrollo de Productos Editorialres Multimedia</span><br>
+              <span class="command">Academia Colón Coslada</span>
+              <div class="indent">
+                Formación como Diseñador de contenido para redes sociales.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Operación de Sistemas de Comunicación de Voz y Datos</span><br>
+              <span class="command">Grupo Aspasia</span>
+              <div class="indent">
+                Formación como Técnico/a en telecomunicaciones.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Operación de Sistemas Informáticos</span><br>
+              <span class="command">Academia Colón Fuenlabrada</span>
+              <div class="indent">
+                Formación técnica en Técnico en Mantenimiento Informático.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Montaje y Reparación de Sistemas Microinformáticos</span><br>
+              <span class="command">Centro Tecnologíco Getafe</span>
+              <div class="indent">
+                Formación Técnico en soporte técnico / Helpdesk.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Operación de Redes Departamentales</span><br>
+              <span class="command">Grupo Femxa</span>
+              <div class="indent">
+                Formación Técnico de comunicaciones.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Técnico en Sistemas Microinformáticos y Redes</span><br>
+              <span class="command">IES Gaspar Melchor de Jovellanos</span>
+              <div class="indent">
+                Formación técnica en administración de sistemas, redes y soporte técnico.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Técnico Preimpresor Digital</span><br>
+              <span class="command">IES Tajamar</span>
+              <div class="indent">
+                Especialización en preparación de archivos digitales para impresión y manejo de software de diseño gráfico.
+              </div>
+            </div>
+          </div>
+        `;
+        return div;
+      }
+
+      showExperience() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Experiencia:</div>
+          <div class="indent">
+            <div>
+              <span class="title">Desarrollador Full Stack</span><br>
+              <span class="command">Freelance - 2020 - Presente</span>
+              <div class="indent">
+                Desarrollo de aplicaciones web completas utilizando tecnologías modernas como 
+                React, Node.js y bases de datos. Colaboración con clientes para crear 
+                soluciones digitales personalizadas y optimizadas.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Desarrollador Frontend</span><br>
+              <span class="command">Diversos Proyectos - 2018 - 2020</span>
+              <div class="indent">
+                Creación de interfaces de usuario responsive y interactivas. 
+                Implementación de diseños en HTML, CSS y JavaScript, asegurando 
+                compatibilidad cross-browser y optimización de rendimiento.
+              </div>
+            </div>
+          </div>
+        `;
+        return div;
+      }
+
+      showProjects() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="section-title">Proyectos:</div>
+          <div class="indent">
+            <div>
+              <span class="title">La Pesadilla de Rick y Morty</span><br>
+              <a href="https://github.com/Antonio-92-cpu/Rickandmorty" target="_blank" class="link">Ver en GitHub</a>
+              <div class="indent">
+                Aplicación web interactiva basada en la serie Rick y Morty, utilizando la API oficial para mostrar personajes y episodios.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Portfolio Terminal</span><br>
+              <span class="command">Proyecto Actual</span>
+              <div class="indent">
+                Terminal interactiva desarrollada con HTML, CSS y JavaScript vanilla 
+                para mostrar información profesional de manera creativa.
+              </div>
+            </div>
+            <br>
+            <div>
+              <span class="title">Sistema de Gestión Web</span><br>
+              <span class="command">En Desarrollo</span>
+              <div class="indent">
+                Aplicación fullstack para gestión de contenidos con panel 
+                de administración y API REST.
+              </div>
+            </div>
+          </div>
+        `;
+        return div;
+      }
+
+      showWhoami() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        div.innerHTML = `
+          <div class="indent">
+            Eres un <span class="title">visitante curioso</span> explorando mi portfolio interactivo 🚀<br>
+            <span class="command">Usuario:</span> invitado<br>
+            <span class="command">Permisos:</span> Solo lectura<br>
+            <span class="command">Sesión iniciada:</span> ${new Date().toLocaleString()}
+          </div>
+        `;
+        return div;
+      }
+
+      search(query) {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        
+        if (!query || query.trim() === '') {
+          div.innerHTML = `<div class="error">Por favor, proporciona un término de búsqueda.</div>
+                          <div>Uso: search [término]</div>`;
+          return div;
+        }
+
+        const searchTerm = query.toLowerCase().trim();
+        const results = this.performSearch(searchTerm);
+        
+        if (results.length === 0) {
+          div.innerHTML = `
+            <div>Resultados de búsqueda para: "<span class="title">${query}</span>"</div>
+            <div class="indent error">No se encontraron resultados.</div>
+          `;
+        } else {
+          let resultsHTML = `<div>Resultados de búsqueda para: "<span class="title">${query}</span>"</div>`;
+          results.forEach(result => {
+            resultsHTML += `
+              <div class="search-result">
+                <span class="command">${result.section}</span>: ${result.snippet}
+              </div>
+            `;
+          });
+          div.innerHTML = resultsHTML;
+        }
+        
+        return div;
+      }
+
+      performSearch(searchTerm) {
+        const searchData = {
+          about: 'Antonio Oyuela desarrollador apasionado tecnología diseño frontend backend experiencias digitales',
+          social: 'GitHub LinkedIn Email redes sociales contacto Antonio-92-cpu',
+          skills: 'HTML CSS JavaScript TypeScript React Angular Astro Node.js Git GitHub Adobe Illustrator Photoshop InDesign Premiere Pro Figma UI UX Design Español Inglés Portugués programación diseño idiomas',
+          education: 'Academia Colón Grupo Fexma IES Gaspar Melchor Jovellanos IES Tajamar Desarrollo Aplicaciones Tecnologías Web Confección Publicación Páginas Web Técnico Sistemas Microinformáticos Redes Preimpresor Digital formación estudios',
+          experience: 'Desarrollador Full Stack Frontend Freelance proyectos React Node.js bases datos aplicaciones web interfaces usuario responsive HTML CSS JavaScript experiencia laboral trabajo',
+          projects: 'Rick Morty Portfolio Terminal Sistema Gestión Web GitHub API aplicación interactiva HTML CSS JavaScript fullstack proyectos desarrollo'
+        };
+
+        const results = [];
+        
+        Object.keys(searchData).forEach(section => {
+          if (searchData[section].toLowerCase().includes(searchTerm)) {
+            const content = searchData[section];
+            const index = content.toLowerCase().indexOf(searchTerm);
+            const start = Math.max(0, index - 50);
+            const end = Math.min(content.length, index + searchTerm.length + 50);
+            let snippet = content.substring(start, end);
+            
+            if (start > 0) snippet = '...' + snippet;
+            if (end < content.length) snippet = snippet + '...';
+            
+            // Resaltar término de búsqueda
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            snippet = snippet.replace(regex, '<span class="search-highlight">$1</span>');
+            
+            results.push({
+              section: section.charAt(0).toUpperCase() + section.slice(1),
+              snippet: snippet
+            });
+          }
+        });
+
+        return results;
+      }
+
+      showHistory() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        
+        if (this.commandHistory.length === 0) {
+          div.innerHTML = '<div class="indent">No hay comandos en el historial.</div>';
+        } else {
+          let historyHTML = '<div class="section-title">Historial de comandos:</div><div class="indent">';
+          this.commandHistory.forEach((cmd, index) => {
+            historyHTML += `<div>${index + 1}: ${cmd}</div>`;
+          });
+          historyHTML += '</div>';
+          div.innerHTML = historyHTML;
+        }
+        
+        return div;
+      }
+
+      clearTerminal() {
+        // Limpiar todo excepto el prompt actual
+        const children = Array.from(this.terminal.children);
+        children.forEach(child => {
+          if (child.id !== 'currentPrompt') {
+            child.remove();
+          }
+        });
+        
+        // Agregar mensaje de bienvenida nuevamente
+        const welcomeDiv = document.createElement('div');
+        welcomeDiv.className = 'terminal-content';
+        welcomeDiv.innerHTML = `
+          <div class="command">Terminal cleared - <span class="error">${new Date().toDateString()}</span></div>
+          <div class="title welcome">Mi Portfolio v1.0</div>
+          <div>Terminal limpia. Escribe <span class="command">help</span> para ver los comandos disponibles.</div>
+        `;
+        
+        this.terminal.insertBefore(welcomeDiv, this.currentPrompt);
+        
+        return null; // No devolver nada ya que ya manipulamos el DOM
+      }
+
+      commandNotFound(command) {
+        const div = document.createElement('div');
+        div.className = 'command-output error';
+        div.innerHTML = `
+          <div>-bash: ${command}: command not found</div>
+          <div>Escribe <span class="command">help</span> para ver los comandos disponibles.</div>
+        `;
+        return div;
+      }
+
+      scrollToBottom() {
+        this.terminal.scrollTop = this.terminal.scrollHeight;
+        this.commandInput.focus();
+      }
+    }
+
+    // Inicializar la terminal cuando se carga la página
+    document.addEventListener('DOMContentLoaded', () => {
+      new TerminalPortfolio();
+    });
+  </script>
+</body>
+</html>
