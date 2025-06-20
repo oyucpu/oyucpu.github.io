@@ -10,266 +10,267 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --gray: #626963;
-      --background: #272A36;
-      --header: #4a4a4a;
-      --text: #F5F3F1;
-      --title: #eeb7eb;
-      --command: #68ff99;
-      --error: #ff8383;
-
+  --gray: #626963;
+  --background: #272A36;
+  --header: #4a4a4a;
+  --text: #F5F3F1;
+  --title: #eeb7eb;
+  --command: #68ff99;
+  --error: #ff8383;
   --light-background: #F5F3F1;
   --light-header: #e0e0e0;
-  --light-text: #272A36;
+  --light-text: #1a1a1a;
   --light-title: #8a3ffc;
   --light-command: #3d8b61;
   --light-error: #ff5e5e;
-  --light-text: #1a1a1a;
 }
 
-      
-      
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+body {
+  display: grid;
+  place-items: center;
+  background-color: var(--gray);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  min-height: 100vh;
+  padding: 20px;
+}
 
-    body {
-      display: grid;
-      place-items: center;
-      background-color: var(--gray);
-      color: var(--text);
-      font-family: 'Space Mono', monospace;
-      font-size: 14px;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    main {
-      height: 550px;
-      width: 100%;
-      max-width: 750px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      border-radius: 5px;
-      overflow: hidden;
-    }
+main {
+  height: 550px;
+  width: 100%;
+  max-width: 750px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  overflow: hidden;
+}
 
 .header {
-  		padding: 0 200px;
-  		height: 55px;
-  		margin: 0;
-  		font-weight: 600;
-      font-size: 16px;
-  		background-color: var(--header);
-  		border-top-left-radius: 5px;
-  		border-top-right-radius: 5px;
-  		display: grid;
-  		place-items: center;
-  		overflow: hidden;
-  		line-height: 4.5;
-  		z-index: 50;
-
-}
-      
-
-    .terminal {
-      background-color: var(--background);
-      color: var(--text);
-      padding: 15px;
-      height: calc(100% - 30px);
-      overflow-y: auto;
-      line-height: 1.4;
-    }
-
-    .terminal-content {
-      margin-bottom: 10px;
-    }
-
-    .prompt {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      margin-top: 10px;
-    }
-
-    .prompt-symbol {
-      color: var(--command);
-      font-weight: 600;
-    }
-
-    .prompt-user {
-      color: var(--title);
-      font-weight: 600;
-    }
-
-    input {
-      background-color: transparent;
-      color: var(--text);
-      font-size: 14px;
-      font-family: 'Space Mono', monospace;
-      border: none;
-      flex: 1;
-      outline: none;
-    }
-
-    .command-output {
-      margin: 10px 0;
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--title);
-      margin-bottom: 10px;
-    }
-
-    .title {
-      color: var(--title);
-      font-weight: 600;
-    }
-
-    .error {
-      color: var(--error);
-      font-weight: 600;
-    }
-
-    .command {
-      color: var(--command);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .command:hover {
-      text-decoration: underline;
-    }
-
-    .indent {
-      margin-left: 20px;
-      margin-top: 5px;
-    }
-
-    .link {
-      color: var(--command);
-      text-decoration: none;
-    }
-
-    .link:hover {
-      text-decoration: underline;
-    }
-
-    .search-result {
-      background-color: rgba(104, 255, 153, 0.1);
-      border-left: 3px solid var(--command);
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 3px;
-    }
-
-    .search-highlight {
-      background-color: var(--command);
-      color: var(--background);
-      padding: 2px 4px;
-      border-radius: 2px;
-    }
-
-    .welcome {
-      margin-bottom: 15px;
-    }
-
-    .help-hint {
-      color: var(--gray);
-      font-size: 12px;
-      margin-top: 10px;
-    }
-
-    @media (max-width: 768px) {
-    
-      body {
-        padding: 10px;
-      }
-      
-      main {
-        height: 80vh;
-        max-height: 600px;
-      }
-      
-      .terminal {
-        font-size: 13px;
-      }
-    }
-
-		body.light-mode {
-  		background-color: var(--light-background);
-  		color: var(--light-text);
+  padding: 0 200px;
+  height: 55px;
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  background-color: var(--header);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  line-height: 3.5;
+  z-index: 50;
 }
 
-	body.light-mode .terminal {
-  		background-color: var(--light-background);
-  		color: var(--light-text);
+.terminal {
+  background-color: var(--background);
+  color: var(--text);
+  padding: 15px;
+  height: calc(100% - 30px);
+  overflow-y: auto;
+  line-height: 1.4;
 }
 
-	body.light-mode .header {
-  		background-color: var(--light-header);
+.terminal-content {
+  margin-bottom: 10px;
 }
 
-	body.light-mode .prompt-symbol,
-	body.light-mode .command,
-	body.light-mode .link {
-  		color: var(--light-command);
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
 }
 
-	body.light-mode .prompt-user,
-	body.light-mode .title {
-  		color: var(--light-title);
+.prompt-symbol {
+  color: var(--command);
+  font-weight: 600;
 }
 
-	body.light-mode .error {
-  		color: var(--light-error);
+.prompt-user {
+  color: var(--title);
+  font-weight: 600;
 }
 
-	body.light-mode .search-result {
-  		background-color: rgba(61, 139, 97, 0.1);
-  		border-left: 3px solid var(--light-command);
+input {
+  background-color: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-family: 'Space Mono', monospace;
+  border: none;
+  flex: 1;
+  outline: none;
 }
 
-	body.light-mode .search-highlight {
-  		background-color: var(--light-command);
-  		color: var(--light-background);
+.command-output {
+  margin: 10px 0;
+  color: var(--text);
 }
 
-    /* Scrollbar personalizada */
-    .terminal::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    .terminal::-webkit-scrollbar-track {
-      background: var(--background);
-    }
-
-    .terminal::-webkit-scrollbar-thumb {
-      background: var(--header);
-      border-radius: 4px;
-    }
-    
-    /*Nuevas características*/
-
-    .terminal::-webkit-scrollbar-thumb:hover {
-      background: var(--gray);}
-      
-	.terminal {
-  		background-color: var(--background);
-  		color: inherit;
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--title);
+  margin-bottom: 10px;
 }
 
-	input {
-  		color: inherit;
+.title {
+  color: var(--title);
+  font-weight: 600;
 }
-	.command-output {
-  		color: inherit;
+
+.error {
+  color: var(--error);
+  font-weight: 600;
 }
+
+.command {
+  color: var(--command);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.command:hover {
+  text-decoration: underline;
+}
+
+.indent {
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.link {
+  color: var(--command);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.search-result {
+  background-color: rgba(104, 255, 153, 0.1);
+  border-left: 3px solid var(--command);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+.search-highlight {
+  background-color: var(--command);
+  color: var(--background);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.welcome {
+  margin-bottom: 15px;
+}
+
+.help-hint {
+  color: var(--gray);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* Scrollbar personalizada */
+.terminal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+.terminal::-webkit-scrollbar-thumb {
+  background: var(--header);
+  border-radius: 4px;
+}
+
+.terminal::-webkit-scrollbar-thumb:hover {
+  background: var(--gray);
+}
+
+/* Modo claro */
+body.light-mode {
+  background-color: var(--light-background);
+  color: var(--light-text);
+}
+
+body.light-mode .terminal {
+  background-color: var(--light-background);
+  color: var(--light-text);
+}
+
+body.light-mode .header {
+  background-color: var(--light-header);
+}
+
+body.light-mode .prompt-symbol,
+body.light-mode .command,
+body.light-mode .link {
+  color: var(--light-command);
+}
+
+body.light-mode .prompt-user,
+body.light-mode .title {
+  color: var(--light-title);
+}
+
+body.light-mode .error {
+  color: var(--light-error);
+}
+
+body.light-mode .search-result {
+  background-color: rgba(61, 139, 97, 0.1);
+  border-left: 3px solid var(--light-command);
+}
+
+body.light-mode .search-highlight {
+  background-color: var(--light-command);
+  color: var(--light-background);
+}
+
+body.light-mode input {
+  color: var(--light-text);
+}
+
+body.light-mode .command-output {
+  color: var(--light-text);
+}
+
+body.light-mode .terminal::-webkit-scrollbar-track {
+  background: var(--light-background);
+}
+
+body.light-mode .terminal::-webkit-scrollbar-thumb {
+  background: var(--light-header);
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  main {
+    height: 80vh;
+    max-height: 600px;
+  }
+  
+  .terminal {
+    font-size: 13px;
+  }
+  
+  .header {
+    padding: 0 20px;
+    font-size: 14px;
+  }
 
   </style>
 </head>
@@ -303,6 +304,32 @@
         this.init();
         this.setupEventListeners();
       }
+	autocompleteCommand() {
+		const currentInput = this.commandInput.value.toLowerCase().trim();
+			if (!currentInput) return;
+
+		const commands = [
+			'about', 'social', 'skills', 'education', 'experience', 'projects',
+			'whoami', 'search', 'history', 'clear', 'help', 'theme'
+  ];
+
+		const matches = commands.filter(cmd => cmd.startsWith(currentInput));
+  
+			if (matches.length === 1) {
+			this.commandInput.value = matches[0];
+  } 	else if (matches.length > 1) {
+			// Muestra las coincidencias en la terminal
+		const suggestionDiv = document.createElement('div');
+			suggestionDiv.className = 'command-output';
+			suggestionDiv.innerHTML = `
+      <div class="indent">
+        Posibles comandos: ${matches.map(cmd => `<span class="command">${cmd}</span>`).join(' • ')}
+      </div>
+    `;
+    this.terminal.insertBefore(suggestionDiv, this.currentPrompt);
+    this.scrollToBottom();
+  }
+}
 
       init() {
         document.getElementById('date').innerText = new Date().toDateString();
@@ -328,6 +355,10 @@
               e.preventDefault();
               this.navigateHistory('down');
               break;
+			case 'Tab':
+			  e.preventDefault();
+			  this.autocompleteCommand();
+			  break;
           }
         });
       }
