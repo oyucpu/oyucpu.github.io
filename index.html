@@ -178,6 +178,54 @@ input {
   margin-top: 10px;
 }
 
+/* Nuevas funciones */
+.calendar {
+  font-family: 'Space Mono', monospace;
+  margin: 10px 0;
+}
+
+.calendar-header {
+  text-align: center;
+  color: var(--title);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.calendar-table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.calendar-table th,
+.calendar-table td {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  padding: 2px;
+  font-size: 12px;
+}
+
+.calendar-table th {
+  color: var(--command);
+  font-weight: 600;
+  border-bottom: 1px solid var(--gray);
+}
+
+.calendar-table td {
+  color: var(--text);
+}
+
+.calendar-table .today {
+  background-color: var(--command);
+  color: var(--background);
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.calendar-table .other-month {
+  color: var(--gray);
+}
+
 /* Scrollbar personalizada */
 .terminal::-webkit-scrollbar {
   width: 8px;
@@ -310,7 +358,7 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
 
 		const commands = [
 			'about', 'social', 'skills', 'education', 'experience', 'projects',
-			'whoami', 'search', 'history', 'clear', 'help', 'theme'
+			'whoami', 'search', 'history', 'clear', 'help', 'theme', 'date'
   ];
 
 		const matches = commands.filter(cmd => cmd.startsWith(currentInput));
@@ -458,6 +506,10 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
             return this.showHistory();
           case 'clear':
             return this.clearTerminal();
+		  case 'date':
+            return this.showDate();
+         /* case 'cal':
+            return this.showCalendar(); */
           default:
             return this.commandNotFound(command);
         }
@@ -485,6 +537,112 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
   return div;
 }
 
+	  showDate() {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+        
+        const now = new Date();
+        const options = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          timeZoneName: 'short'
+        };
+        
+        const fullDate = now.toLocaleDateString('es-ES', options);
+        const time = now.toLocaleTimeString('es-ES');
+        
+        div.innerHTML = `
+          <div class="indent">
+            <div><span class="title">Fecha completa:</span> ${fullDate}</div>
+            <div><span class="title">Hora actual:</span> <span class="command">${time}</span></div>
+            <div><span class="title">Zona horaria:</span> ${Intl.DateTimeFormat().resolvedOptions().timeZone}</div>
+          </div>
+        `;
+        return div;
+      }
+
+      /* showCalendar() {
+        const div = document.createElement('div');
+        div.className = 'command-output calendar';
+        
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const today = now.getDate();
+        
+        // Nombres de los meses en español
+        const monthNames = [
+          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        
+        // Nombres de los días de la semana
+        const dayNames = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
+        
+        // Primer día del mes y número de días del mes
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Ajustar para que lunes sea 0
+        
+        // Días del mes anterior
+        const prevMonth = new Date(year, month, 0);
+        const daysInPrevMonth = prevMonth.getDate();
+        
+        let calendarHTML = `
+          <div class="calendar-header">${monthNames[month]} ${year}</div>
+          <table class="calendar-table">
+            <tr>
+              ${dayNames.map(day => `<th>${day}</th>`).join('')}
+            </tr>
+        `;
+        
+        let dayCount = 1;
+        let nextMonthDayCount = 1;
+        
+        // Generar 6 semanas (filas)
+        for (let week = 0; week < 6; week++) {
+          calendarHTML += '<tr>';
+          
+          // Generar 7 días (columnas)
+          for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
+            const cellNumber = week * 7 + dayOfWeek;
+            
+            if (cellNumber < startingDayOfWeek) {
+              // Días del mes anterior
+              const prevMonthDay = daysInPrevMonth - startingDayOfWeek + cellNumber + 1;
+              calendarHTML += `<td class="other-month">${prevMonthDay}</td>`;
+            } else if (dayCount <= daysInMonth) {
+              // Días del mes actual
+              const todayClass = dayCount === today ? ' today' : '';
+              calendarHTML += `<td class="${todayClass}">${dayCount}</td>`;
+              dayCount++;
+            } else {
+              // Días del mes siguiente
+              calendarHTML += `<td class="other-month">${nextMonthDayCount}</td>`;
+              nextMonthDayCount++;
+            }
+          }
+          
+          calendarHTML += '</tr>';
+          
+          // Si ya mostramos todos los días del mes y estamos en una fila que solo tiene días del mes siguiente, podemos parar
+          if (dayCount > daysInMonth && nextMonthDayCount > 7) {
+            break;
+          }
+        }
+        
+        calendarHTML += '</table>';
+        
+        div.innerHTML = calendarHTML;
+        return div;
+      } */
+
       showHelp() {
         const div = document.createElement('div');
         div.className = 'command-output';
@@ -499,7 +657,8 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
             <div><span class="command">projects</span> - Mis proyectos</div>
             <div><span class="command">whoami</span> - Información del usuario</div>
             <div><span class="command">search [término]</span> - Buscar contenido</div>
-            <div><span class="command">history</span> - Historial de comandos</div>
+			<div><span class="command">date</span> - Mostrar fecha y hora actual</div>
+			<div><span class="command">history</span> - Historial de comandos</div>
             <div><span class="command">clear</span> - Limpiar terminal</div>
             <div><span class="command">theme [dark|light]</span> - Cambiar modo de color</div>
 
@@ -508,7 +667,7 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         `;
         return div;
       }
-
+	  
       showAbout() {
         const div = document.createElement('div');
         div.className = 'command-output';
