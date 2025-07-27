@@ -168,6 +168,34 @@ input {
   border-radius: 2px;
 }
 
+.category-result {
+  background-color: rgba(238, 183, 235, 0.1);
+  border-left: 3px solid var(--title);
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 5px;
+}
+
+.category-title {
+  color: var(--title);
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.category-content {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.search-match {
+  background-color: var(--title);
+  color: var(--background);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
 .welcome {
   margin-bottom: 15px;
 }
@@ -279,8 +307,18 @@ body.light-mode .search-result {
   border-left: 3px solid var(--light-command);
 }
 
+body.light-mode .category-result {
+  background-color: rgba(138, 63, 252, 0.1);
+  border-left: 3px solid var(--light-title);
+}
+
 body.light-mode .search-highlight {
   background-color: var(--light-command);
+  color: var(--light-background);
+}
+
+body.light-mode .search-match {
+  background-color: var(--light-title);
   color: var(--light-background);
 }
 
@@ -351,39 +389,141 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         
         this.init();
         this.setupEventListeners();
+        this.initializeSearchData();
       }
-	autocompleteCommand() {
-		const currentInput = this.commandInput.value.toLowerCase().trim();
-			if (!currentInput) return;
 
-		const commands = [
-			'about', 'social', 'skills', 'education', 'experience', 'projects',
-			'whoami', 'search', 'history', 'clear', 'help', 'theme', 'date'
-  ];
+      initializeSearchData() {
+        // Datos de búsqueda por categorías
+        this.searchCategories = {
+          informatica: {
+            title: '💻 Informática y Sistemas',
+            aliases: ['informatica', 'informática', 'sistemas', 'system', 'computer', 'ordenador'],
+            content: {
+              skills: [
+                'Hirens Bot CD', 'Clonezilla', 'Windows', 'Linux', 'MacOS', 'Android', 
+                'Gparted', 'Terminal', 'Seguridad informática', 'Iptables'
+              ],
+              education: [
+                'Técnico en Sistemas Microinformáticos y Redes - IES Gaspar Melchor de Jovellanos',
+                'Operación de Sistemas Informáticos - Academia Colón Fuenlabrada', 
+                'Montaje y Reparación de Sistemas Microinformáticos - Centro Tecnológico Getafe',
+                'Sistemas Microinformáticos - Cursos Femxa',
+                'Operación de Redes Departamentales - Grupo Femxa'
+              ],
+              tools: ['GParted', 'Clonezilla', 'Hiren\'s BootCD', 'VirtualBox', 'Iptables']
+            }
+          },
+          programacion: {
+            title: '⚡ Programación y Desarrollo',
+            aliases: ['programacion', 'programación', 'desarrollo', 'dev', 'coding', 'code'],
+            content: {
+              skills: [
+                'HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Angular', 
+                'Astro', 'Node.js', 'Git', 'GitHub', 'PostgreSQL', 'MariaDB'
+              ],
+              education: [
+                'Programación con Lenguajes Orientados a Objetos y Bases de Datos Relacionales - Cursos 0,0',
+                'Desarrollo de Aplicaciones con Tecnologías Web - Academia Colón',
+                'FP GS Desarrollo de Aplicaciones Web - IES Enrique Tierno Galván',
+                'Confección y Publicación de Páginas Web - Grupo Fexma'
+              ],
+              tools: ['VS Code', 'Postman', 'Git', 'GitHub Desktop', 'XAMPP', 'Node.js'],
+              projects: [
+                'La Pesadilla de Rick y Morty - Aplicación web con API',
+                'Portfolio Terminal - Terminal interactiva con JavaScript',
+                'Sistema de Gestión Web - Aplicación fullstack en desarrollo'
+              ]
+            }
+          },
+          diseño: {
+            title: '🎨 Diseño y Multimedia',
+            aliases: ['diseño', 'design', 'multimedia', 'grafico', 'gráfico'],
+            content: {
+              skills: [
+                'Adobe Illustrator', 'Photoshop', 'InDesign', 'Premiere Pro', 
+                'Adobe Dreamweaver', 'Paquete Corel Draw', 'Figma', 'UI/UX Design', 
+                'Adobe Animate', 'Paquete Affinity', 'Canva'
+              ],
+              education: [
+                'Diseño Editorial y Publicaciones Impresas y Multimedia - IES Virgen de la Paloma',
+                'Desarrollo de Productos Editoriales Multimedia - Academia Colón Coslada',
+                'Técnico Preimpresor Digital - IES Tajamar'
+              ],
+              tools: ['Adobe Illustrator', 'Photoshop', 'Figma', 'Canva', 'InDesign', 'Premiere Pro']
+            }
+          },
+          seguridad: {
+            title: '🔒 Seguridad Informática',
+            aliases: ['seguridad', 'security', 'ciberseguridad', 'cyber'],
+            content: {
+              skills: ['Maltego', 'FOCA', 'Seguridad informática', 'Iptables'],
+              education: ['Seguridad Informática - Grupo Aspasa'],
+              tools: ['Wireshark', 'Maltego', 'FOCA', 'Nmap', 'Kali Linux']
+            }
+          },
+          redes: {
+            title: '🌐 Redes y Telecomunicaciones',
+            aliases: ['redes', 'network', 'telecomunicaciones', 'comunicaciones'],
+            content: {
+              skills: ['Iptables', 'Redes departamentales'],
+              education: [
+                'Operación de Sistemas de Comunicación de Voz y Datos - Grupo Aspasia',
+                'Operación de Redes Departamentales - Grupo Femxa',
+                'Técnico en Sistemas Microinformáticos y Redes - IES Gaspar Melchor de Jovellanos'
+              ],
+              tools: ['Iptables', 'VirtualBox', 'Wireshark']
+            }
+          },
+          idiomas: {
+            title: '🌍 Idiomas',
+            aliases: ['idiomas', 'languages', 'lenguas'],
+            content: {
+              skills: ['Español (Nativo)', 'Inglés (Básico)', 'Portugués (Básico)']
+            }
+          }
+        };
 
-		const matches = commands.filter(cmd => cmd.startsWith(currentInput));
+        // Datos de búsqueda general
+        this.generalSearchData = {
+          'Información Personal': 'Antonio Oyuela desarrollador apasionado tecnología diseño frontend backend experiencias digitales',
+          'Redes Sociales': 'GitHub LinkedIn Email redes sociales contacto Antonio-92-cpu',
+          'Habilidades Técnicas': 'HTML CSS JavaScript TypeScript React Angular Astro Node.js Git GitHub Adobe Illustrator Photoshop InDesign Premiere Pro Figma UI UX Design Español Inglés Portugués programación diseño idiomas',
+          'Formación Académica': 'Academia Colón Grupo Fexma IES Gaspar Melchor Jovellanos IES Tajamar Desarrollo Aplicaciones Tecnologías Web Confección Publicación Páginas Web Técnico Sistemas Microinformáticos Redes Preimpresor Digital formación estudios',
+          'Experiencia Laboral': 'Desarrollador Full Stack Frontend Freelance proyectos React Node.js bases datos aplicaciones web interfaces usuario responsive HTML CSS JavaScript experiencia laboral trabajo',
+          'Proyectos': 'Rick Morty Portfolio Terminal Sistema Gestión Web GitHub API aplicación interactiva HTML CSS JavaScript fullstack proyectos desarrollo'
+        };
+      }
+
+      autocompleteCommand() {
+        const currentInput = this.commandInput.value.toLowerCase().trim();
+        if (!currentInput) return;
+
+        const commands = [
+          'about', 'social', 'skills', 'education', 'experience', 'projects',
+          'whoami', 'search', 'history', 'clear', 'help', 'theme', 'date', 'tools'
+        ];
+
+        const matches = commands.filter(cmd => cmd.startsWith(currentInput));
   
-			if (matches.length === 1) {
-			this.commandInput.value = matches[0];
-  } 	else if (matches.length > 1) {
-			// Muestra las coincidencias en la terminal
-		const suggestionDiv = document.createElement('div');
-			suggestionDiv.className = 'command-output';
-			suggestionDiv.innerHTML = `
-      <div class="indent">
-        Posibles comandos: ${matches.map(cmd => `<span class="command">${cmd}</span>`).join(' • ')}
-      </div>
-    `;
-    this.terminal.insertBefore(suggestionDiv, this.currentPrompt);
-    this.scrollToBottom();
-  }
-}
+        if (matches.length === 1) {
+          this.commandInput.value = matches[0];
+        } else if (matches.length > 1) {
+          const suggestionDiv = document.createElement('div');
+          suggestionDiv.className = 'command-output';
+          suggestionDiv.innerHTML = `
+            <div class="indent">
+              Posibles comandos: ${matches.map(cmd => `<span class="command">${cmd}</span>`).join(' • ')}
+            </div>
+          `;
+          this.terminal.insertBefore(suggestionDiv, this.currentPrompt);
+          this.scrollToBottom();
+        }
+      }
 
       init() {
         document.getElementById('date').innerText = new Date().toDateString();
         this.commandInput.focus();
         
-        // Focus en el input cuando se hace click en la terminal
         this.terminal.addEventListener('click', () => {
           this.commandInput.focus(); 
         });
@@ -403,10 +543,10 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
               e.preventDefault();
               this.navigateHistory('down');
               break;
-			case 'Tab':
-			  e.preventDefault();
-			  this.autocompleteCommand();
-			  break;
+            case 'Tab':
+              e.preventDefault();
+              this.autocompleteCommand();
+              break;
           }
         });
       }
@@ -434,12 +574,10 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         const trimmedCommand = command.trim();
         if (trimmedCommand === '') return;
         
-        // Evitar duplicados consecutivos
         if (this.commandHistory.length === 0 || 
             this.commandHistory[this.commandHistory.length - 1] !== trimmedCommand) {
           this.commandHistory.push(trimmedCommand);
           
-          // Limitar historial a 60 comandos
           if (this.commandHistory.length > 60) {
             this.commandHistory.shift();
           }
@@ -450,14 +588,11 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
       executeCommand() {
         const command = this.commandInput.value.trim();
         
-        // Crear la línea de comando ejecutada
         const commandLine = this.createCommandLine(command);
         this.terminal.insertBefore(commandLine, this.currentPrompt);
         
-        // Agregar al historial
         this.addToHistory(command);
         
-        // Ejecutar comando
         if (command !== '') {
           const output = this.processCommand(command);
           if (output) {
@@ -465,7 +600,6 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
           }
         }
         
-        // Limpiar input y hacer scroll
         this.commandInput.value = '';
         this.scrollToBottom();
       }
@@ -481,8 +615,10 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         const cmd = args[0];
         
         switch(cmd) {
-        	case 'theme':
-  				return this.setTheme(args[1]);
+          case 'tools':
+            return this.showTools(args[1]);
+          case 'theme':
+            return this.setTheme(args[1]);
           case 'help':
             return this.showHelp();
           case 'about':
@@ -506,38 +642,36 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
             return this.showHistory();
           case 'clear':
             return this.clearTerminal();
-		  case 'date':
+          case 'date':
             return this.showDate();
-         /* case 'cal':
-            return this.showCalendar(); */
           default:
             return this.commandNotFound(command);
         }
       }
       
       setTheme(mode) {
-  const div = document.createElement('div');
-  div.className = 'command-output';
+        const div = document.createElement('div');
+        div.className = 'command-output';
 
-  if (!mode || (mode !== 'dark' && mode !== 'light')) {
-    div.innerHTML = `
-      <div class="error">Modo inválido.</div>
-      <div>Uso: <span class="command">theme [dark|light]</span></div>
-    `;
-    return div;
-  }
+        if (!mode || (mode !== 'dark' && mode !== 'light')) {
+          div.innerHTML = `
+            <div class="error">Modo inválido.</div>
+            <div>Uso: <span class="command">theme [dark|light]</span></div>
+          `;
+          return div;
+        }
 
-  if (mode === 'light') {
-    document.body.classList.add('light-mode');
-  } else {
-    document.body.classList.remove('light-mode');
-  }
+        if (mode === 'light') {
+          document.body.classList.add('light-mode');
+        } else {
+          document.body.classList.remove('light-mode');
+        }
 
-  div.innerHTML = `<div class="indent">Tema cambiado a <span class="command">${mode}</span>.</div>`;
-  return div;
-}
+        div.innerHTML = `<div class="indent">Tema cambiado a <span class="command">${mode}</span>.</div>`;
+        return div;
+      }
 
-	  showDate() {
+      showDate() {
         const div = document.createElement('div');
         div.className = 'command-output';
         
@@ -566,83 +700,6 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         return div;
       }
 
-      /* showCalendar() {
-        const div = document.createElement('div');
-        div.className = 'command-output calendar';
-        
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
-        const today = now.getDate();
-        
-        // Nombres de los meses en español
-        const monthNames = [
-          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-        ];
-        
-        // Nombres de los días de la semana
-        const dayNames = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa', 'Do'];
-        
-        // Primer día del mes y número de días del mes
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        const daysInMonth = lastDay.getDate();
-        const startingDayOfWeek = (firstDay.getDay() + 6) % 7; // Ajustar para que lunes sea 0
-        
-        // Días del mes anterior
-        const prevMonth = new Date(year, month, 0);
-        const daysInPrevMonth = prevMonth.getDate();
-        
-        let calendarHTML = `
-          <div class="calendar-header">${monthNames[month]} ${year}</div>
-          <table class="calendar-table">
-            <tr>
-              ${dayNames.map(day => `<th>${day}</th>`).join('')}
-            </tr>
-        `;
-        
-        let dayCount = 1;
-        let nextMonthDayCount = 1;
-        
-        // Generar 6 semanas (filas)
-        for (let week = 0; week < 6; week++) {
-          calendarHTML += '<tr>';
-          
-          // Generar 7 días (columnas)
-          for (let dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++) {
-            const cellNumber = week * 7 + dayOfWeek;
-            
-            if (cellNumber < startingDayOfWeek) {
-              // Días del mes anterior
-              const prevMonthDay = daysInPrevMonth - startingDayOfWeek + cellNumber + 1;
-              calendarHTML += `<td class="other-month">${prevMonthDay}</td>`;
-            } else if (dayCount <= daysInMonth) {
-              // Días del mes actual
-              const todayClass = dayCount === today ? ' today' : '';
-              calendarHTML += `<td class="${todayClass}">${dayCount}</td>`;
-              dayCount++;
-            } else {
-              // Días del mes siguiente
-              calendarHTML += `<td class="other-month">${nextMonthDayCount}</td>`;
-              nextMonthDayCount++;
-            }
-          }
-          
-          calendarHTML += '</tr>';
-          
-          // Si ya mostramos todos los días del mes y estamos en una fila que solo tiene días del mes siguiente, podemos parar
-          if (dayCount > daysInMonth && nextMonthDayCount > 7) {
-            break;
-          }
-        }
-        
-        calendarHTML += '</table>';
-        
-        div.innerHTML = calendarHTML;
-        return div;
-      } */
-
       showHelp() {
         const div = document.createElement('div');
         div.className = 'command-output';
@@ -651,23 +708,24 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
           <div class="indent">
             <div><span class="command">about</span> - Información sobre mi</div>
             <div><span class="command">social</span> - Mis redes sociales</div>
-            <div><span class="command">skills</span> - Herramientas y tecnologías</div>
+            <div><span class="command">skills</span> - Habilidades</div>
+            <div><span class="command">tools [categoría]</span> - Herramientas agrupadas (dev, diseño, seguridad, redes)</div>
             <div><span class="command">education</span> - Formación académica</div>
             <div><span class="command">experience</span> - Experiencia laboral</div>
             <div><span class="command">projects</span> - Mis proyectos</div>
             <div><span class="command">whoami</span> - Información del usuario</div>
-            <div><span class="command">search [término]</span> - Buscar contenido</div>
-			<div><span class="command">date</span> - Mostrar fecha y hora actual</div>
-			<div><span class="command">history</span> - Historial de comandos</div>
+            <div><span class="command">search [término]</span> - Buscar por categorías o contenido general</div>
+            <div><span class="command">date</span> - Mostrar fecha y hora actual</div>
+            <div><span class="command">history</span> - Historial de comandos</div>
             <div><span class="command">clear</span> - Limpiar terminal</div>
             <div><span class="command">theme [dark|light]</span> - Cambiar modo de color</div>
-
           </div>
           <div class="help-hint">Usa las flechas ↑↓ para navegar por el historial</div>
+          <div class="help-hint">Búsqueda por categorías: informática, programación, diseño, seguridad, redes, idiomas</div>
         `;
         return div;
       }
-	  
+      
       showAbout() {
         const div = document.createElement('div');
         div.className = 'command-output';
@@ -745,6 +803,7 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
                 <span class="title">Portugués (Básico)</span>
               </div>
             </div>
+          </div>
         `;
         return div;
       }
@@ -755,6 +814,14 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         div.innerHTML = `
           <div class="section-title">Formación:</div>
           <div class="indent">
+            <div>
+              <span class="title">Seguridad Informática</span><br>
+              <span class="command">Grupo Aspasa</span>
+              <div class="indent">
+                Desarrollar aplicaciones organizando el código en clases y objetos, usando diferentes lenguajes. Diseño y la gestión de Bases de Datos de forma eficiente.
+                Mi labor esencial es integrar datos y lógica de negocio, en proyectos.
+            </div>
+            </div>
             <div>
               <span class="title">Programación con Lenguajes Orientados a Objetos y Bases de Datos Relacionales</span><br>
               <span class="command">Cursos 0,0</span>
@@ -837,6 +904,14 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
             </div>
             <br>
             <div>
+            <div>
+              <span class="title">Sistemas Microinformáticos</span><br>
+              <span class="command">Cursos Femxa</span>
+              <div class="indent">
+                Desarrollar aplicaciones organizando el código en clases y objetos, usando diferentes lenguajes. Diseño y la gestión de Bases de Datos de forma eficiente.
+                Mi labor esencial es integrar datos y lógica de negocio, en proyectos.
+            </div>
+            </div>
               <span class="title">Operación de Redes Departamentales</span><br>
               <span class="command">Grupo Femxa</span>
               <div class="indent">
@@ -929,6 +1004,77 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         `;
         return div;
       }
+      
+      showTools(category) {
+        const div = document.createElement('div');
+        div.className = 'command-output';
+
+        const tools = {
+          dev: {
+            aliases: ['dev', 'desarrollo', 'development'],
+            title: '🛠 Desarrollo y Testing',
+            items: ['VS Code', 'Postman', 'Git', 'GitHub Desktop', 'XAMPP', 'Node.js']
+          },
+          design: {
+            aliases: ['design', 'diseño'],
+            title: '🎨 Diseño y Multimedia',
+            items: ['Adobe Illustrator', 'Photoshop', 'Figma', 'Canva', 'InDesign', 'Premiere Pro']
+          },
+          sec: {
+            aliases: ['sec', 'seguridad', 'security'],
+            title: '🔍 Seguridad y Auditoría',
+            items: ['Wireshark', 'Maltego', 'FOCA', 'Nmap', 'Kali Linux']
+          },
+          net: {
+            aliases: ['net', 'redes', 'sistemas', 'network'],
+            title: '📡 Redes y Sistemas',
+            items: ['GParted', 'Clonezilla', 'Hiren\'s BootCD', 'VirtualBox', 'Iptables']
+          }
+        };
+
+        let selectedCategory = null;
+
+        if (category) {
+          for (const key in tools) {
+            if (tools[key].aliases.includes(category.toLowerCase())) {
+              selectedCategory = key;
+              break;
+            }
+          }
+        }
+
+        if (category && !selectedCategory) {
+          div.innerHTML = `
+            <div class="error">Categoría no válida: <span class="command">${category}</span></div>
+            <div class="indent">Uso: tools [dev | design | sec | net]</div>
+            <div class="indent">También puedes usar: desarrollo, diseño, seguridad, redes</div>
+            <div class="indent">Ejemplo: <span class="command">tools diseño</span></div>
+          `;
+          return div;
+        }
+
+        if (selectedCategory) {
+          const t = tools[selectedCategory];
+          div.innerHTML = `
+            <div class="section-title">${t.title}</div>
+            <div class="indent">${t.items.map(item => `<span class="title">${item}</span>`).join(' • ')}</div>
+          `;
+          return div;
+        }
+
+        let html = '<div class="section-title">Herramientas Profesionales:</div><div class="indent">';
+        for (const key in tools) {
+          const t = tools[key];
+          html += `
+            <div><span class="command">${t.title}</span></div>
+            <div class="indent">${t.items.map(item => `<span class="title">${item}</span>`).join(' • ')}</div>
+            <br>
+          `;
+        }
+        html += '</div>';
+        div.innerHTML = html;
+        return div;
+      }
 
       showWhoami() {
         const div = document.createElement('div');
@@ -944,54 +1090,130 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         return div;
       }
 
+      // BÚSQUEDA UNIFICADA - Combina búsqueda por categorías y contenido general
       search(query) {
         const div = document.createElement('div');
         div.className = 'command-output';
         
         if (!query || query.trim() === '') {
-          div.innerHTML = `<div class="error">Por favor, proporciona un término de búsqueda.</div>
-                          <div>Uso: search [término]</div>`;
+          div.innerHTML = `
+            <div class="error">Por favor, proporciona un término de búsqueda.</div>
+            <div>Uso: <span class="command">search [término]</span></div>
+            <div class="indent">Categorías: informática, programación, diseño, seguridad, redes, idiomas</div>
+            <div class="indent">O busca cualquier término en el contenido general</div>
+          `;
           return div;
         }
 
         const searchTerm = query.toLowerCase().trim();
-        const results = this.performSearch(searchTerm);
         
-        if (results.length === 0) {
+        // Primero intentar búsqueda por categorías
+        const categoryResults = this.performCategorySearch(searchTerm);
+        
+        // Si no hay resultados por categorías, buscar en contenido general
+        const generalResults = categoryResults.length === 0 ? this.performGeneralSearch(searchTerm) : [];
+        
+        // Combinar resultados
+        const allResults = [...categoryResults, ...generalResults];
+        
+        if (allResults.length === 0) {
           div.innerHTML = `
             <div>Resultados de búsqueda para: "<span class="title">${query}</span>"</div>
             <div class="indent error">No se encontraron resultados.</div>
+            <div class="indent">Prueba con: informática, programación, diseño, seguridad, redes, idiomas</div>
+            <div class="indent">O busca términos como: HTML, JavaScript, React, Adobe, etc.</div>
           `;
         } else {
           let resultsHTML = `<div>Resultados de búsqueda para: "<span class="title">${query}</span>"</div>`;
-          results.forEach(result => {
+          
+          // Mostrar resultados por categorías primero
+          categoryResults.forEach(result => {
+            resultsHTML += `
+              <div class="category-result">
+                <div class="category-title">${result.category}</div>
+                <div class="category-content">${result.content}</div>
+              </div>
+            `;
+          });
+          
+          // Mostrar resultados generales después
+          generalResults.forEach(result => {
             resultsHTML += `
               <div class="search-result">
                 <span class="command">${result.section}</span>: ${result.snippet}
               </div>
             `;
           });
+          
           div.innerHTML = resultsHTML;
         }
         
         return div;
       }
 
-      performSearch(searchTerm) {
-        const searchData = {
-          about: 'Antonio Oyuela desarrollador apasionado tecnología diseño frontend backend experiencias digitales',
-          social: 'GitHub LinkedIn Email redes sociales contacto Antonio-92-cpu',
-          skills: 'HTML CSS JavaScript TypeScript React Angular Astro Node.js Git GitHub Adobe Illustrator Photoshop InDesign Premiere Pro Figma UI UX Design Español Inglés Portugués programación diseño idiomas',
-          education: 'Academia Colón Grupo Fexma IES Gaspar Melchor Jovellanos IES Tajamar Desarrollo Aplicaciones Tecnologías Web Confección Publicación Páginas Web Técnico Sistemas Microinformáticos Redes Preimpresor Digital formación estudios',
-          experience: 'Desarrollador Full Stack Frontend Freelance proyectos React Node.js bases datos aplicaciones web interfaces usuario responsive HTML CSS JavaScript experiencia laboral trabajo',
-          projects: 'Rick Morty Portfolio Terminal Sistema Gestión Web GitHub API aplicación interactiva HTML CSS JavaScript fullstack proyectos desarrollo'
-        };
-
+      performCategorySearch(searchTerm) {
         const results = [];
         
-        Object.keys(searchData).forEach(section => {
-          if (searchData[section].toLowerCase().includes(searchTerm)) {
-            const content = searchData[section];
+        Object.keys(this.searchCategories).forEach(categoryKey => {
+          const category = this.searchCategories[categoryKey];
+          
+          // Verificar si el término coincide con la categoría o sus alias
+          const matchesCategory = category.aliases.some(alias => 
+            alias.toLowerCase().includes(searchTerm) || searchTerm.includes(alias.toLowerCase())
+          );
+          
+          if (matchesCategory) {
+            let contentHTML = '';
+            
+            // Mostrar skills si existen
+            if (category.content.skills && category.content.skills.length > 0) {
+              contentHTML += `<div><span class="command">Habilidades:</span></div>`;
+              contentHTML += `<div class="indent">${category.content.skills.map(skill => 
+                `<span class="title">${this.highlightMatch(skill, searchTerm)}</span>`
+              ).join(' • ')}</div><br>`;
+            }
+            
+            // Mostrar education si existe
+            if (category.content.education && category.content.education.length > 0) {
+              contentHTML += `<div><span class="command">Formación:</span></div>`;
+              category.content.education.forEach(edu => {
+                contentHTML += `<div class="indent">• ${this.highlightMatch(edu, searchTerm)}</div>`;
+              });
+              contentHTML += '<br>';
+            }
+            
+            // Mostrar tools si existen
+            if (category.content.tools && category.content.tools.length > 0) {
+              contentHTML += `<div><span class="command">Herramientas:</span></div>`;
+              contentHTML += `<div class="indent">${category.content.tools.map(tool => 
+                `<span class="title">${this.highlightMatch(tool, searchTerm)}</span>`
+              ).join(' • ')}</div><br>`;
+            }
+            
+            // Mostrar projects si existen
+            if (category.content.projects && category.content.projects.length > 0) {
+              contentHTML += `<div><span class="command">Proyectos:</span></div>`;
+              category.content.projects.forEach(project => {
+                contentHTML += `<div class="indent">• ${this.highlightMatch(project, searchTerm)}</div>`;
+              });
+            }
+            
+            results.push({
+              category: category.title,
+              content: contentHTML
+            });
+          }
+        });
+        
+        return results;
+      }
+
+      performGeneralSearch(searchTerm) {
+        const results = [];
+        
+        Object.keys(this.generalSearchData).forEach(section => {
+          if (this.generalSearchData[section].toLowerCase().includes(searchTerm)) {
+            const content = this.generalSearchData[section];
             const index = content.toLowerCase().indexOf(searchTerm);
             const start = Math.max(0, index - 50);
             const end = Math.min(content.length, index + searchTerm.length + 50);
@@ -1005,13 +1227,18 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
             snippet = snippet.replace(regex, '<span class="search-highlight">$1</span>');
             
             results.push({
-              section: section.charAt(0).toUpperCase() + section.slice(1),
+              section: section,
               snippet: snippet
             });
           }
         });
 
         return results;
+      }
+
+      highlightMatch(text, searchTerm) {
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        return text.replace(regex, '<span class="search-match">$1</span>');
       }
 
       showHistory() {
@@ -1033,7 +1260,6 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
       }
 
       clearTerminal() {
-        // Limpiar todo excepto el prompt actual
         const children = Array.from(this.terminal.children);
         children.forEach(child => {
           if (child.id !== 'currentPrompt') {
@@ -1041,7 +1267,6 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
           }
         });
         
-        // Agregar mensaje de bienvenida nuevamente
         const welcomeDiv = document.createElement('div');
         welcomeDiv.className = 'terminal-content';
         welcomeDiv.innerHTML = `
@@ -1052,7 +1277,7 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
         
         this.terminal.insertBefore(welcomeDiv, this.currentPrompt);
         
-        return null; // No devolver nada ya que ya manipulamos el DOM
+        return null;
       }
 
       commandNotFound(command) {
@@ -1071,7 +1296,6 @@ body.light-mode .terminal::-webkit-scrollbar-thumb {
       }
     }
 
-    // Inicializar la terminal cuando se carga la página
     document.addEventListener('DOMContentLoaded', () => {
       new TerminalPortfolio();
     });
