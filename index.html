@@ -28,6 +28,24 @@
       --v2-command: #10b981;
       --v2-error: #f87171;
       --v2-accent: #60a5fa;
+	  
+	  /* Tema Halloween (v3) */
+      --v3-gray: #1a0f0a;
+      --v3-background: #0d0907;
+      --v3-header: #1f1410;
+      --v3-text: #ffa500;
+      --v3-title: #ff6b00;
+      --v3-command: #00ff00;
+      --v3-error: #ff0000;
+      --v3-accent: #b026ff;
+	  
+	  /* Corrección visual para modo Halloween */
+	  body.halloween-mode .help-hint {
+      color: var(--text);
+      opacity: 0.9;
+	  text-shadow: 0 0 6px rgba(255, 102, 0, 0.6);
+      font-weight: 500;
+	}
       
       /* Variables activas (empezamos con v1) */
       --gray: var(--v1-gray);
@@ -71,6 +89,69 @@
       background: linear-gradient(135deg, var(--v2-gray) 0%, #4a5568 100%);
       font-family: 'JetBrains Mono', 'Consolas', monospace;
       line-height: 1.5;
+    }
+	
+	    /* Tema Halloween activado */
+    body.halloween-mode {
+      --gray: var(--v3-gray);
+      --background: var(--v3-background);
+      --header: var(--v3-header);
+      --text: var(--v3-text);
+      --title: var(--v3-title);
+      --command: var(--v3-command);
+      --error: var(--v3-error);
+      --accent: var(--v3-accent);
+      background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 50%, #1a0f0a 100%);
+      background-size: 200% 200%;
+      font-family: 'Space Mono', monospace;
+      animation: spookyBackground 20s ease infinite;
+    }
+
+    @keyframes spookyBackground {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    body.halloween-mode main {
+      box-shadow: 0 0 30px rgba(255, 102, 0, 0.3), 0 0 60px rgba(255, 102, 0, 0.1);
+      border: 2px solid rgba(255, 102, 0, 0.3);
+      animation: spookyGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes spookyGlow {
+      0%, 100% { box-shadow: 0 0 30px rgba(255, 102, 0, 0.3), 0 0 60px rgba(255, 102, 0, 0.1); }
+      50% { box-shadow: 0 0 40px rgba(255, 102, 0, 0.5), 0 0 80px rgba(255, 102, 0, 0.2); }
+    }
+
+    body.halloween-mode .header {
+      background: linear-gradient(90deg, #1f1410 0%, #2d1810 50%, #1f1410 100%);
+      border-bottom: 2px solid rgba(255, 102, 0, 0.5);
+    }
+
+    body.halloween-mode .command {
+      color: var(--command);
+      text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    }
+
+    body.halloween-mode .title {
+      color: var(--title);
+      text-shadow: 0 0 8px rgba(255, 102, 0, 0.6);
+    }
+
+    body.halloween-mode .status-dot {
+      background-color: #ff6b00;
+      animation: spookyPulse 1.5s infinite;
+    }
+
+    @keyframes spookyPulse {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+      }
+      50% { 
+        opacity: 0.3; 
+        transform: scale(1.5);
+      }
     }
 
     main {
@@ -599,7 +680,8 @@
         <div>Hola! Bienvenidos a mi portfolio, para ver la lista de comandos ingresá <span class="command">help</span></div>
         <div class="help-hint">Usa las flechas ↑↓ para navegar por el historial de comandos</div>
         <div class="help-hint">💡 Ejecuta <span class="command">admin</span> para acceder al modo administrador</div>
-      </div>
+		<div class="help-hint">🎃 !Especial Halloween! Usa <span class="command">halloween</span> para el tema terror铆fico</div>
+	  </div>
       <div class="prompt" id="currentPrompt">
         <span class="prompt-symbol">$</span>
         <span class="prompt-user">invitado</span>
@@ -989,7 +1071,9 @@
             } else {
               return this.alreadyInMode('guest');
             }
-          case 'tools':
+		  case 'halloween':
+			return this.toggleHalloweenMode();
+		  case 'tools':
             return this.showTools(args[1]);
           case 'theme':
             return this.setTheme(args[1]);
@@ -1028,7 +1112,41 @@
             return this.commandNotFound(command);
         }
       }
+	  
+	  toggleHalloweenMode() {
+  const div = document.createElement('div');
+  div.className = 'command-output';
 
+  if (document.body.classList.contains('halloween-mode')) {
+    document.body.classList.remove('halloween-mode');
+    div.innerHTML = `
+      <div class="section-title">🎃 Tema Halloween desactivado</div>
+      <div class="indent">
+        <div>👻 El ambiente espeluznante ha desaparecido...</div>
+        <div class="help-hint">💡 Usa <span class="command">halloween</span> otra vez para activarlo.</div>
+      </div>
+    `;
+  } else {
+    document.body.classList.add('halloween-mode');
+    div.innerHTML = `
+      <div class="section-title">🕸️ Tema Halloween activado</div>
+      <div class="indent">
+        <div>🦇 ¡Bienvenido al modo más aterrador del año!</div>
+        <div>🧛 Disfruta de los colores naranjas, sombras y efectos terroríficos.</div>
+        <div class="help-hint">💀 Usa <span class="command">halloween</span> para volver al tema normal.</div>
+      </div>
+    `;
+
+    // Efecto de sonido opcional (si deseas añadirlo)
+    const audio = new Audio('https://cdn.pixabay.com/download/audio/2023/10/05/audio_c3e3c4d7b6.mp3?filename=spooky-night-184515.mp3');
+    audio.volume = 0.3;
+    audio.play();
+  }
+
+  return div;
+}
+
+	  
       alreadyInMode(mode) {
         const div = document.createElement('div');
         div.className = 'command-output';
