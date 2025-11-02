@@ -1,0 +1,492 @@
+/* ========================================
+   PORTFOLIO TERMINAL - ANTONIO OYUELA
+   Archivo: styles.css
+   Versión optimizada y modular
+======================================== */
+
+/* ============== VARIABLES DE COLOR ============== */
+:root {
+  /* Modo Invitado (v1) */
+  --v1-gray: #626963;
+  --v1-background: #272A36;
+  --v1-header: #4a4a4a;
+  --v1-text: #F5F3F1;
+  --v1-title: #eeb7eb;
+  --v1-command: #68ff99;
+  --v1-error: #ff8383;
+
+  /* Modo Admin (v2) */
+  --v2-gray: #626963;
+  --v2-background: #1a1d23;
+  --v2-header: #2d3142;
+  --v2-text: #e2e8f0;
+  --v2-title: #a78bfa;
+  --v2-command: #10b981;
+  --v2-error: #f87171;
+  --v2-accent: #60a5fa;
+
+  /* Tema Halloween (v3) */
+  --v3-gray: #1a0f0a;
+  --v3-background: #0d0907;
+  --v3-header: #1f1410;
+  --v3-text: #ffa500;
+  --v3-title: #ff6b00;
+  --v3-command: #00ff00;
+  --v3-error: #ff0000;
+  --v3-accent: #b026ff;
+
+  /* Variables activas (por defecto: invitado) */
+  --gray: var(--v1-gray);
+  --background: var(--v1-background);
+  --header: var(--v1-header);
+  --text: var(--v1-text);
+  --title: var(--v1-title);
+  --command: var(--v1-command);
+  --error: var(--v1-error);
+  --accent: var(--v1-command);
+}
+
+/* ============== RESET & TIPOGRAFÍA ============== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: var(--gray);
+  color: var(--text);
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: all 0.5s ease;
+}
+
+/* ============== MODO ADMIN ============== */
+body.admin-mode {
+  --gray: var(--v2-gray);
+  --background: var(--v2-background);
+  --header: var(--v2-header);
+  --text: var(--v2-text);
+  --title: var(--v2-title);
+  --command: var(--v2-command);
+  --error: var(--v2-error);
+  --accent: var(--v2-accent);
+
+  background: linear-gradient(135deg, var(--v2-gray) 0%, #4a5568 100%);
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  line-height: 1.6;
+}
+
+/* ============== MODO HALLOWEEN ============== */
+body.halloween-mode {
+  --gray: var(--v3-gray);
+  --background: var(--v3-background);
+  --header: var(--v3-header);
+  --text: var(--v3-text);
+  --title: var(--v3-title);
+  --command: var(--v3-command);
+  --error: var(--v3-error);
+  --accent: var(--v3-accent);
+
+  background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 50%, #1a0f0a 100%);
+  background-size: 200% 200%;
+  font-family: 'Space Mono', monospace;
+  animation: spookyBackground 20s ease infinite;
+}
+
+@keyframes spookyBackground {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+body.halloween-mode main {
+  box-shadow: 0 0 30px rgba(255, 102, 0, 0.3), 0 0 60px rgba(255, 102, 0, 0.1);
+  border: 2px solid rgba(255, 102, 0, 0.3);
+  animation: spookyGlow 3s ease-in-out infinite;
+}
+
+@keyframes spookyGlow {
+  0%, 100% { box-shadow: 0 0 30px rgba(255, 102, 0, 0.3), 0 0 60px rgba(255, 102, 0, 0.1); }
+  50% { box-shadow: 0 0 40px rgba(255, 102, 0, 0.5), 0 0 80px rgba(255, 102, 0, 0.2); }
+}
+
+body.halloween-mode .header { 
+  background: linear-gradient(90deg, #1f1410 0%, #2d1810 50%, #1f1410 100%);
+  border-bottom: 2px solid rgba(255, 102, 0, 0.5);
+}
+
+body.halloween-mode .command { text-shadow: 0 0 5px rgba(0, 255, 0, 0.5); }
+body.halloween-mode .title { text-shadow: 0 0 8px rgba(255, 102, 0, 0.6); }
+body.halloween-mode .status-dot { 
+  background-color: #ff6b00; 
+  animation: spookyPulse 1.5s infinite; 
+}
+
+@keyframes spookyPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.5); }
+}
+
+/* Corrección visual Halloween */
+body.halloween-mode .help-hint {
+  color: var(--text);
+  opacity: 0.9;
+  text-shadow: 0 0 6px rgba(255, 102, 0, 0.6);
+  font-weight: 500;
+}
+
+/* ============== LAYOUT PRINCIPAL ============== */
+main {
+  height: 550px;
+  width: 100%;
+  max-width: 750px;
+  background: var(--background);
+  border-radius: 5px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.5s ease;
+}
+
+body.admin-mode main {
+  height: 600px;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ============== HEADER ============== */
+.header {
+  height: 55px;
+  padding: 0 200px;
+  background-color: var(--header);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 3.5;
+  z-index: 50;
+  transition: all 0.5s ease;
+}
+
+body.admin-mode .header {
+  height: 60px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  line-height: normal;
+}
+
+.header-content { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  width: 100%; 
+  justify-content: center; 
+}
+
+body.admin-mode .header-content { display: contents; }
+
+.header-left { display: none; align-items: center; gap: 12px; }
+body.admin-mode .header-left { display: flex; }
+
+.window-controls { display: flex; gap: 8px; }
+.window-control { width: 12px; height: 12px; border-radius: 50%; }
+.close { background-color: #ff5f57; }
+.minimize { background-color: #ffbd2e; }
+.maximize { background-color: #28ca42; }
+
+.header-title { 
+  color: var(--text); 
+  font-family: 'Inter', sans-serif; 
+}
+body:not(.admin-mode) .header-title { font-family: 'Space Mono', monospace; }
+
+.status-indicator { 
+  display: none; 
+  align-items: center; 
+  gap: 6px; 
+  color: var(--command); 
+  font-size: 12px; 
+}
+body.admin-mode .status-indicator { display: inline-flex; }
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--command);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* ============== TERMINAL ============== */
+.terminal {
+  background-color: var(--background);
+  color: var(--text);
+  padding: 15px;
+  height: calc(100% - 55px);
+  overflow-y: auto;
+  line-height: 1.4;
+  transition: all 0.5s ease;
+}
+
+body.admin-mode .terminal {
+  padding: 20px;
+  height: calc(100% - 60px);
+  line-height: 1.6;
+}
+
+.terminal-content { margin-bottom: 10px; }
+body.admin-mode .terminal-content { margin-bottom: 15px; }
+
+/* ============== PROMPT & INPUT ============== */
+.prompt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+body.admin-mode .prompt { gap: 8px; margin-top: 15px; }
+
+.prompt-symbol { color: var(--command); font-weight: 600; }
+.prompt-user { color: var(--title); font-weight: 600; }
+.prompt-path { color: var(--accent); font-weight: 500; display: none; }
+body.admin-mode .prompt-path { display: inline; }
+
+input {
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  border: none;
+  flex: 1;
+  outline: none;
+  caret-color: var(--command);
+}
+
+input::selection {
+  background-color: var(--title);
+  color: var(--background);
+}
+
+/* ============== TEXTO & ESTILOS ============== */
+.command-output { margin: 10px 0; color: var(--text); }
+body.admin-mode .command-output { margin: 15px 0; }
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--title);
+  margin-bottom: 10px;
+}
+
+body.admin-mode .section-title {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title { color: var(--title); font-weight: 600; }
+.error { color: var(--error); font-weight: 600; }
+.command { 
+  color: var(--command); 
+  font-weight: 600; 
+  cursor: pointer; 
+  transition: all 0.2s ease; 
+}
+.command:hover { text-decoration: underline; filter: brightness(1.2); }
+
+.indent { margin-left: 20px; margin-top: 5px; }
+body.admin-mode .indent { margin-left: 24px; margin-top: 8px; }
+
+.link {
+  color: var(--command);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+body.admin-mode .link { color: var(--accent); }
+.link:hover { text-decoration: underline; filter: brightness(1.2); }
+
+/* ============== RESULTADOS DE BÚSQUEDA ============== */
+.search-result {
+  background: rgba(104, 255, 153, 0.1);
+  border-left: 3px solid var(--command);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+}
+
+body.admin-mode .search-result {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.1), transparent);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+body.admin-mode .search-result:hover {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.15), transparent);
+}
+
+.search-highlight {
+  background: var(--command);
+  color: var(--background);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+body.admin-mode .search-highlight { padding: 2px 6px; border-radius: 4px; }
+
+.category-result {
+  background: rgba(238, 183, 235, 0.1);
+  border-left: 3px solid var(--title);
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+body.admin-mode .category-result {
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.1), transparent);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+body.admin-mode .category-result:hover {
+  background: linear-gradient(90deg, rgba(167, 139, 250, 0.15), transparent);
+}
+
+.category-title { color: var(--title); font-weight: 600; font-size: 16px; margin-bottom: 8px; }
+body.admin-mode .category-title { margin-bottom: 10px; }
+
+.search-match {
+  background: var(--title);
+  color: var(--background);
+  padding: 1px 3px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+body.admin-mode .search-match { padding: 2px 6px; border-radius: 4px; }
+
+/* ============== ELEMENTOS ADMIN ============== */
+.skill-tag {
+  display: none;
+  background: rgba(167, 139, 250, 0.1);
+  color: var(--title);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 2px 4px 2px 0;
+  border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+body.admin-mode .skill-tag { display: inline-block; }
+
+.project-card {
+  display: none;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 15px;
+  margin: 10px 0;
+  transition: all 0.2s ease;
+}
+
+body.admin-mode .project-card { display: block; }
+body.admin-mode .project-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent);
+}
+
+/* ============== SCROLLBAR ============== */
+.terminal::-webkit-scrollbar { width: 8px; }
+body.admin-mode .terminal::-webkit-scrollbar { width: 10px; }
+
+.terminal::-webkit-scrollbar-track { background: var(--background); }
+
+.terminal::-webkit-scrollbar-thumb {
+  background: var(--header);
+  border-radius: 4px;
+}
+
+body.admin-mode .terminal::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  border: 2px solid var(--background);
+}
+
+.terminal::-webkit-scrollbar-thumb:hover { background: var(--gray); }
+
+/* ============== MEDIA QUERIES ============== */
+@media (max-width: 768px) {
+  body { padding: 10px; }
+  main { height: 80vh; max-height: 600px; }
+  body.admin-mode main { height: 85vh; max-height: 700px; border-radius: 8px; }
+  .terminal, body.admin-mode .terminal { font-size: 13px; padding: 15px; }
+  .header, body.admin-mode .header { padding: 0 20px; font-size: 14px; }
+  body.admin-mode .window-controls { display: none; }
+}
+
+@media (max-width: 480px) {
+  .terminal, body.admin-mode .terminal { font-size: 12px; padding: 12px; }
+  .indent, body.admin-mode .indent { margin-left: 16px; }
+}
+
+/* ============== TRANSICIONES ============== */
+.mode-transition {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.5s ease;
+}
+
+.mode-transition.active {
+  opacity: 1;
+  transform: scale(1);
+}
+/* Corrección visual Halloween */
+body.halloween-mode .help-hint {
+  color: var(--text);
+  opacity: 0.9;
+  text-shadow: 0 0 6px rgba(255, 102, 0, 0.6);
+  font-weight: 500;
+}
+
+.welcome {
+  margin-bottom: 15px;
+}
+
+body.admin-mode .welcome {
+  margin-bottom: 20px;
+}
+
+.help-hint {
+  color: var(--gray);
+  font-size: 12px;
+  margin-top: 10px;
+  opacity: 0.8;
+}
+
+body.admin-mode .help-hint {
+  margin-top: 15px;
+}
