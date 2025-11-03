@@ -311,6 +311,17 @@ toggleHalloweenMode() {
   const div = this.createElement('div', 'command-output');
 
   if (!isHalloweenDate) {
+  
+  // Código nuevo
+  
+  /* if (this.isHalloweenMode) {
+      this.isHalloweenMode = false;
+      document.body.classList.remove('halloween-mode');
+      this.updatePrompt();
+      this.updateDateTime();
+      this.refreshAllPrompts();
+    } */
+  
     div.innerHTML = `
       <div class="section-title">🎃 Modo Halloween bloqueado</div>
       <div class="indent">
