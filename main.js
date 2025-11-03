@@ -534,8 +534,8 @@ toggleHalloweenMode() {
     return this.createElement('div', 'command-output', `
       <div class="section-title">Redes y Contacto</div>
       <div class="indent">
-        <div><span class="command">GitHub:</span> <a href="https://github.com/Antonio-92-cpu" target="_blank">github.com/Antonio-92-cpu</a></div>
-        <div><span class="command">LinkedIn:</span> <a href="https://linkedin.com/in/antonio-oyuela" target="_blank">linkedin.com/in/antonio-oyuela</a></div>
+        <div><span class="command">GitHub:</span> <a href="https://github.com/oyucpu" target="_blank">github.com/Antonio-92-cpu</a></div>
+        <div><span class="command">LinkedIn:</span> <a href="https://www.linkedin.com/in/antonio-oyuela-s%C3%A1nchez-0a3185141/" target="_blank">linkedin.com/in/antonio-oyuela</a></div>
         <div><span class="command">Email:</span> <a href="mailto:antonio.oyuela.dev@gmail.com">antonio.oyuela.dev@gmail.com</a></div>
         <br>
         <div class="help-hint">¡Hablemos! Escribe <span class="command">contact</span> para más opciones</div>
