@@ -757,7 +757,7 @@ toggleHalloweenMode() {
       },
       programacion: {
         title: 'Programación y Desarrollo',
-        aliases: ['programacion', 'programación', 'desarrollo', 'dev', 'coding', 'code'],
+        aliases: ['programacion', 'programación', 'desarrollo', 'dev', 'coding', 'code', 'codigo', 'código', 'web'],
         content: {
           skills: [
             'HTML5', 'CSS3', 'JavaScript', 'TypeScript', 'React', 'Angular', 
@@ -766,10 +766,10 @@ toggleHalloweenMode() {
           education: [
             'Programación con Lenguajes Orientados a Objetos y Bases de Datos Relacionales - Cursos 0,0',
             'Desarrollo de Aplicaciones con Tecnologías Web - Academia Colón',
-            'FP GS Desarrollo de Aplicaciones Web - IES Enrique Tierno Galván',
+            '1º FP GS Desarrollo de Aplicaciones Web - IES Enrique Tierno Galván',
             'Confección y Publicación de Páginas Web - Cursos Femxa'
           ],
-          tools: ['VS Code', 'Postman', 'Git', 'GitHub Desktop', 'XAMPP', 'Node.js'],
+          tools: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Angular', 'Astro','VS Code', 'Postman', 'Git', 'Github', 'GitHub Desktop', 'GitHub Pages', 'XAMPP', 'Node.js'],
           projects: [
             'La Pesadilla de Rick y Morty - Aplicación web con API',
             'Portfolio Terminal - Terminal interactiva con JavaScript',
